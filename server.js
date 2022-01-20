@@ -74,12 +74,30 @@ app.get("/moods", async (req, res) => {
     }
 });
 
-// Create route
+// Mood Create route
 app.post("/moods", async (req, res) => {
     try {
         res.json(await Mood.create(req.body)) // send all Moods
     } catch (error) {
         res.status(400).json.apply(error) // send error
+    }
+});
+
+// Mood Delete route
+app.delete("/moods/:id", async (req, res) => {
+    try {
+        res.json(await Mood.findByIdAndDelete(req.params.id))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+});
+
+// Mood Update route
+app.put("/moods/:id", async (req, res) => {
+    try {
+        res.json(await Mood.findByIdAndUpdate(req.params.id, req.body, { new: true }))
+    } catch (error) {
+        res.status(400).json(error)
     }
 });
 

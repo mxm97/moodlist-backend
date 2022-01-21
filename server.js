@@ -65,10 +65,19 @@ app.get("/", (req, res) => {
     res.send("Hello world");
 });
 
-// Index route
+// Mood Index route
 app.get("/moods", async (req, res) => {
     try {
         res.json(await Mood.find({})) // send all Moods
+    } catch (error) {
+        res.status(400).json(error) // send error
+    }
+});
+
+// Song Index route ----- SHOULD NOT BE ACCESSIBLE TO USERS -----
+app.get("/songs", async (req, res) => {
+    try {
+        res.json(await Song.find({})) // send all Moods
     } catch (error) {
         res.status(400).json(error) // send error
     }
@@ -83,6 +92,18 @@ app.post("/moods", async (req, res) => {
     }
 });
 
+// Song Create route
+// easiest option is to create songs as a separate thing, and have an option to filter by mood
+// unsure of how yet to push a song directly into a Mood
+// when creating a song, can add a dropdown selector for Moods
+app.post("/songs", async (req, res) => {
+    try {
+        res.json(await Song.create(req.body))
+    } catch (error) {
+        res.status(400).json.apply(error)
+    }
+});
+
 // Mood Delete route
 app.delete("/moods/:id", async (req, res) => {
     try {
@@ -92,10 +113,28 @@ app.delete("/moods/:id", async (req, res) => {
     }
 });
 
+// Song Delete route
+app.delete("/songs/:id", async (req, res) => {
+    try {
+        res.json(await Song.findByIdAndDelete(req.params.id))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+});
+
 // Mood Update route
 app.put("/moods/:id", async (req, res) => {
     try {
         res.json(await Mood.findByIdAndUpdate(req.params.id, req.body, { new: true }))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+});
+
+// Song Update route
+app.put("/songs/:id", async (req, res) => {
+    try {
+        res.json(await Song.findByIdAndUpdate(req.params.id, req.body, { new: true }))
     } catch (error) {
         res.status(400).json(error)
     }

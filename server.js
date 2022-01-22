@@ -44,7 +44,7 @@ const Song = mongoose.model("Song", SongSchema);
 
 const MoodSchema = new mongoose.Schema({
     name: String,
-    background: String,
+    image: String,
     songs: [SongSchema]
 },
     {
